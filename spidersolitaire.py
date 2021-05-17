@@ -51,12 +51,29 @@ class Sequence:
     def __init__(self, cards):
         self._cards = cards
 
+    # leere Liste ist keine Sequenz
+    if not cards:
+        print("Leere Liste übergeben")
+        return False
+    # wir starten mit der ersten Karte
+    card = cards[0]
+    for current_card in cards[1:]:
+        # aktuelle Karte muss zur letzten Karte passen
+        if not current_card.fits_to(card):
+            print("Übergebene Liste ist keine Sequence")
+            return False
+        # aktualisiere "letzte Karte"
+        card = current_card
+    
+
     def first_card(self):
         "Liefert die erste Karte dieser Sequenz"
         return self._cards[0]
     
     # TODO: Hier kommt Ihr Code
-
+     def last_card(self):
+        "Liefert die erste Karte dieser Sequenz"
+        return self._cards[-1]
 
     def __str__(self):
         return "-".join(map(str, self._cards))
