@@ -52,18 +52,18 @@ class Sequence:
         self._cards = cards
 
     # leere Liste ist keine Sequenz
-    if not cards:
-        print("Leere Liste übergeben")
-        return False
-    # wir starten mit der ersten Karte
-    card = cards[0]
-    for current_card in cards[1:]:
-        # aktuelle Karte muss zur letzten Karte passen
-        if not current_card.fits_to(card):
-            print("Übergebene Liste ist keine Sequence")
+        if not self._cards:
+            print("Leere Liste übergeben")
             return False
-        # aktualisiere "letzte Karte"
-        card = current_card
+        # wir starten mit der ersten Karte
+        card = self._cards[0]
+        for current_card in self._cards[1:]:
+            # aktuelle Karte muss zur letzten Karte passen
+            if not current_card.fits_to(self._card):
+                print("Übergebene Liste ist keine Sequence")
+                return False
+            # aktualisiere "letzte Karte"
+            card = current_card
     
 
     def first_card(self):
@@ -74,6 +74,31 @@ class Sequence:
      def last_card(self):
         "Liefert die erste Karte dieser Sequenz"
         return self._cards[-1]
+
+    def is_full(self):
+        if len(self._cards) == 13:
+            return True
+        return False
+    
+    def fits_to(self, target_sequence, matching_suit=True):
+        "Prueft, ob diese Sequenz an eine andere angehaengt werden kann"
+        # die erste Karte der ersten Sequenz muss zur letzten Karte der Zweiten passen
+        return self._cards[0].fits_to(target_sequence[-1], matching_suit=matching_suit)
+    
+    def merge(self, target_sequence):
+        if not self._cards[0].fits_to(target_sequence[-1]):
+            print("Die Sequencen können nicht zusammengefügt werden")
+        else:
+             self._cards.append(target_sequence)
+
+    def split(self, idx):
+        if idx == 0 or idx => len(self._cards):
+            print("Abtrennen nicht möglich")
+            return
+        else: 
+            splitted_cards = self._cards[idx:]
+            self._cards = self._cards[:idx]
+            return splitted_cards
 
     def __str__(self):
         return "-".join(map(str, self._cards))
@@ -101,7 +126,6 @@ class Stack:
             self.append_sequence(Sequence([self._face_down_cards.pop()]))
     
     # TODO: Hier kommt Ihr Code
-
 
     def __str__(self):
         return " ".join(len(self._face_down_cards) *  [uni_cards['face_down']] + list(map(str, self._sequences)))
