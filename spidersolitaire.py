@@ -49,13 +49,14 @@ class Sequence:
     """
     # TODO: Hier kommt Ihr Code
     def __init__(self, list_of_cards):
+
     # leere Liste ist keine Sequenz
-        if not self._cards:
+        if not list_of_cards:
             print("Leere Liste übergeben")
             return
         # wir starten mit der ersten Karte
-        card = self._cards[0]
-        for current_card in self._cards[1:]:
+        card = list_of_cards[0]
+        for current_card in list_of_cards[1:]:
             # aktuelle Karte muss zur letzten Karte passen
             if not current_card.fits_to(card):
                 print("Übergebene Liste ist keine Sequence")
@@ -64,7 +65,6 @@ class Sequence:
             card = current_card
         
         self._cards = list_of_cards
-    
 
     def first_card(self):
         "Liefert die erste Karte dieser Sequenz"
@@ -76,27 +76,28 @@ class Sequence:
         return self._cards[-1]
 
     def is_full(self):
-        if len(self._cards) == 13:
-            return True
-        return False
+        if len(self._cards) != 13:
+            return False
+        return True
     
     def fits_to(self, target_sequence, matching_suit=True):
         "Prueft, ob diese Sequenz an eine andere angehaengt werden kann"
         # die erste Karte der ersten Sequenz muss zur letzten Karte der Zweiten passen
-        return self._cards[0].fits_to(target_sequence[-1], matching_suit=matching_suit)
+        return self.first_card().fits_to(target_sequence.last_card(), matching_suit=matching_suit)
     
     def merge(self, target_sequence):
-        if not self._cards[0].fits_to(target_sequence[-1]):
+        # hier muss die target_sequence zu der eigenen passen nicht anders rum
+        if not target_sequence.fits_to(self): 
             print("Die Sequencen können nicht zusammengefügt werden")
-        else:
-             self._cards.append(target_sequence)
-
+            return
+        self._cards += target_sequence._cards
+            
     def split(self, idx):
         if idx == 0 or idx >= len(self._cards):
             print("Abtrennen nicht möglich")
             return
         else: 
-            splitted_cards = self._cards[idx:]
+            splitted_cards = Sequence(self._cards[idx:])
             self._cards = self._cards[:idx]
             return splitted_cards
 
@@ -110,10 +111,9 @@ class Stack:
     Neben den Sequenzen, welche den aufgedeckten Karten entsprechen, merkt sich ein Stapel noch die umgedrehten/verdeckten Karten.
     """
     # TODO: Hier kommt Ihr Code
-    def __init__(self, sequence, face_down_cards):
-        self._sequence = sequence
+    def __init__(self, card, face_down_cards):
+        self._sequences = [Sequence([card])]
         self._face_down_cards = face_down_cards
-
 
 
     def is_empty(self):
@@ -121,6 +121,20 @@ class Stack:
         return not self._sequences
 
     # TODO: Hier kommt Ihr Code
+    def last_sequence(self):
+        if self.is_empty():
+            print("Es existiert keine Sequence auf diesem Stapel")
+            return
+        return self._sequences[-1]
+    
+    def append_sequence(self, sequence):
+        self._sequences.append(sequence)
+    
+    def remove_last_sequence(self):
+        
+        
+
+
 
     def test_revealcard(self):
         """
