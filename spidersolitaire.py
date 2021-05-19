@@ -131,10 +131,10 @@ class Stack:
         self._sequences.append(sequence)
     
     def remove_last_sequence(self):
-        
-        
-
-
+        if self.is_empty():
+            print("Es existiert keine Sequence auf diesem Stapel")
+            return
+        self._sequences.pop()
 
     def test_revealcard(self):
         """
@@ -145,6 +145,19 @@ class Stack:
             self.append_sequence(Sequence([self._face_down_cards.pop()]))
     
     # TODO: Hier kommt Ihr Code
+
+    def test_fullsequence(self):
+        if self.last_sequence().is_full():
+            self.remove_last_sequence()
+            self.test_revealcard()
+    
+    def deal_card(self, card):
+        seq = Sequence([card])
+        if seq.fits_to(self.last_sequence()):
+            self.last_sequence().merge(seq)
+            self.test_fullsequence()
+        else:
+            self.append_sequence(seq)
 
     def __str__(self):
         return " ".join(len(self._face_down_cards) *  [uni_cards['face_down']] + list(map(str, self._sequences)))
