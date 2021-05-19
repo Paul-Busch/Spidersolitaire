@@ -48,22 +48,22 @@ class Sequence:
     Diese Klasse modelliert eine absteigende Sequenz von Karten
     """
     # TODO: Hier kommt Ihr Code
-    def __init__(self, cards):
-        self._cards = cards
-
+    def __init__(self, list_of_cards):
     # leere Liste ist keine Sequenz
         if not self._cards:
             print("Leere Liste übergeben")
-            return False
+            return
         # wir starten mit der ersten Karte
         card = self._cards[0]
         for current_card in self._cards[1:]:
             # aktuelle Karte muss zur letzten Karte passen
-            if not current_card.fits_to(self._card):
+            if not current_card.fits_to(card):
                 print("Übergebene Liste ist keine Sequence")
-                return False
+                return
             # aktualisiere "letzte Karte"
             card = current_card
+        
+        self._cards = list_of_cards
     
 
     def first_card(self):
@@ -71,7 +71,7 @@ class Sequence:
         return self._cards[0]
     
     # TODO: Hier kommt Ihr Code
-     def last_card(self):
+    def last_card(self):
         "Liefert die erste Karte dieser Sequenz"
         return self._cards[-1]
 
@@ -92,7 +92,7 @@ class Sequence:
              self._cards.append(target_sequence)
 
     def split(self, idx):
-        if idx == 0 or idx => len(self._cards):
+        if idx == 0 or idx >= len(self._cards):
             print("Abtrennen nicht möglich")
             return
         else: 
@@ -110,7 +110,12 @@ class Stack:
     Neben den Sequenzen, welche den aufgedeckten Karten entsprechen, merkt sich ein Stapel noch die umgedrehten/verdeckten Karten.
     """
     # TODO: Hier kommt Ihr Code
-    
+    def __init__(self, sequence, face_down_cards):
+        self._sequence = sequence
+        self._face_down_cards = face_down_cards
+
+
+
     def is_empty(self):
         "Prueft, ob dieser Stapel leer ist, es also keine offenen Karten mehr gibt."
         return not self._sequences
