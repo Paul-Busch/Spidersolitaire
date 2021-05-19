@@ -190,8 +190,22 @@ class SpiderSolitaire:
         self.origin_stack_index = None
     
     # TODO: Hier kommt Ihr Code
+    def deal(self):
+        #prüfen ob noch Karten ausgeteilt werden können
+        if not self._stack2deal:
+            print("Es gibt keine Karten mehr zum Austeilen")
+            return
 
-    
+        #prüfen ob auf jedem stack min eine karte offen liegt
+        for stack in self._stacks:
+            if stack.is_empty():
+                print("Es muss auf jedem Stapel mindestens eine Karte liegen, um neue Karten auszuteilen")
+                return
+
+        # von stack2deal jeweils auf jedem stack eine karte austeilen
+        for stack in self._stacks:
+            stack.deal_card(self._stack2deal.pop())
+
     def pick_up(self, stack_index, card_index):
         """
         'Aufheben' einer Sequenz
@@ -258,7 +272,6 @@ class SpiderSolitaire:
         source_stack = self._stacks[self.origin_stack_index]
 
         # TODO: Hier kommt Ihr Code
-        
 
         # reset containers
         self.moving_sequence = None
