@@ -272,6 +272,20 @@ class SpiderSolitaire:
         source_stack = self._stacks[self.origin_stack_index]
 
         # TODO: Hier kommt Ihr Code
+        # if target stack is empty or if moving sequence fits to target stack (only value) --> append moving sequences to target stack
+        if target_stack.is_empty() or self.moving_sequence.fits_to(target_stack.last_sequence(), matching_suit=False):
+            target_stack.append_sequence(self.moving_sequence)
+            source_stack.test_revealcard()
+            target_stack.test_fullsequence()
+        # if moving sequence fits to target stack (i.e. color and value) --> merge the sequences
+        elif self.moving_sequence.fits_to(target_stack.last_sequence(), matching_suit=True):
+            target_stack.last_sequence().merge(self.moving_sequence)
+            source_stack.test_revealcard()
+            target_stack.test_fullsequence()
+        # if moving stack does not fit at all --> abort move
+        else:
+            print("Verschobene Sequenz kann nicht an Zielstapel angehängt werden")
+            self.abort_move()
 
         # reset containers
         self.moving_sequence = None
